@@ -5,7 +5,7 @@ metadata:
   namespace: default
 spec:
   containers:
-  - name: app
+  - name: app2
     image: nginx:latest
     resources:
       requests:
