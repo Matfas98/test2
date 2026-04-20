@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: resource-constrained-app
+  namespace: default
+spec:
+  containers:
+  - name: app
+    image: nginx:latest
+    resources:
+      requests:
+        memory: "2Gi"  # Intentional issue - excessive memory request
+        cpu: "1"         # Intentional issue - excessive CPU request
+      limits:
+        memory: "4Gi" # Intentional issue - excessive memory limit
+        cpu: "2"        # Intentional issue - excessive CPU limit
+    livenessProbe:
+      httpGet:
+        path: /   # Intentional issue - nginx serves health on /
+        port: 80
+      initialDelaySeconds: 3
+      periodSeconds: 5
+    readinessProbe:
+      httpGet:
+        path: /     # Intentional issue - incorrect path
+        port: 80       # Intentional issue - wrong port
+      initialDelaySeconds: 5
+      periodSeconds: 10
+    ports:
+    - containerPort: 80  # Correct port but readiness probe is checking 8080
